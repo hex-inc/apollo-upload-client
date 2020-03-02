@@ -1,6 +1,6 @@
 {
   "name": "@hex/apollo-upload-client",
-  "version": "13.0.0-beta.5",
+  "version": "13.0.0-beta.6",
   "description": "A terminating Apollo Link for Apollo Client that allows FileList, File, Blob or ReactNativeFile instances within query or mutation variables and sends GraphQL multipart requests.",
   "license": "MIT",
   "author": {
@@ -62,8 +62,7 @@
     "prepare:js": "tsc --skipLibCheck",
     "prepare:jsdoc": "jsdoc-md",
     "prepare:prettier": "prettier 'lib/**/*.js' readme.md --write",
-    "test": "npm run test:eslint && npm run test:prettier && npm run test:size",
-    "test:eslint": "eslint .",
+    "test": "npm run npm run test:prettier && npm run test:size",
     "test:prettier": "prettier '**/*.{json,yml,md}' -l",
     "test:size": "size-limit",
     "prepublishOnly": "npm test"
