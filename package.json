@@ -28,7 +28,6 @@
     "lib"
   ],
   "main": "lib",
-  "types": "./index.d.ts",
   "sideEffects": false,
   "engines": {
     "node": ">=8.10"

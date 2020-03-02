@@ -31,8 +31,8 @@ See also the [example API and client](https://github.com/jaydenseric/apollo-uplo
 ### [`FileList`](https://developer.mozilla.org/docs/web/api/filelist)
 
 ```jsx
-const { useMutation } = require('@apollo/react-hooks')
-const gql = require('graphql-tag')
+const { useMutation } = require("@apollo/react-hooks");
+const gql = require("graphql-tag");
 
 const MUTATION = gql`
   mutation($files: [Upload!]!) {
@@ -40,22 +40,22 @@ const MUTATION = gql`
       success
     }
   }
-`
+`;
 
 const UploadFile = () => {
-  const [mutate] = useMutation(MUTATION)
+  const [mutate] = useMutation(MUTATION);
   const onChange = ({ target: { validity, files } }) =>
-    validity.valid && mutate({ variables: { files } })
+    validity.valid && mutate({ variables: { files } });
 
-  return <input type="file" multiple required onChange={onChange} />
-}
+  return <input type="file" multiple required onChange={onChange} />;
+};
 ```
 
 ### [`File`](https://developer.mozilla.org/docs/web/api/file)
 
 ```jsx
-const { useMutation } = require('@apollo/react-hooks')
-const gql = require('graphql-tag')
+const { useMutation } = require("@apollo/react-hooks");
+const gql = require("graphql-tag");
 
 const MUTATION = gql`
   mutation($file: Upload!) {
@@ -63,33 +63,33 @@ const MUTATION = gql`
       success
     }
   }
-`
+`;
 
 const UploadFile = () => {
-  const [mutate] = useMutation(MUTATION)
+  const [mutate] = useMutation(MUTATION);
   const onChange = ({
     target: {
       validity,
       files: [file]
     }
-  }) => validity.valid && mutate({ variables: { file } })
+  }) => validity.valid && mutate({ variables: { file } });
 
-  return <input type="file" required onChange={onChange} />
-}
+  return <input type="file" required onChange={onChange} />;
+};
 ```
 
 ### [`Blob`](https://developer.mozilla.org/docs/web/api/blob)
 
 ```jsx
-const gql = require('graphql-tag')
+const gql = require("graphql-tag");
 
 // Apollo Client instance.
-const client = require('./client')
+const client = require("./client");
 
-const file = new Blob(['Foo.'], { type: 'text/plain' })
+const file = new Blob(["Foo."], { type: "text/plain" });
 
 // Optional, defaults to `blob`.
-file.name = 'bar.txt'
+file.name = "bar.txt";
 
 client.mutate({
   mutation: gql`
@@ -100,7 +100,7 @@ client.mutate({
     }
   `,
   variables: { file }
-})
+});
 ```
 
 ## Support
@@ -118,118 +118,3 @@ Consider polyfilling:
 ## API
 
 ### Table of contents
-
-- [class ReactNativeFile](#class-reactnativefile)
-- [function createUploadLink](#function-createuploadlink)
-- [type FetchOptions](#type-fetchoptions)
-- [type ReactNativeFileSubstitute](#type-reactnativefilesubstitute)
-
-### class ReactNativeFile
-
-Used to mark a [React Native `File` substitute](#type-reactnativefilesubstitute). It’s too risky to assume all objects with `uri`, `type` and `name` properties are files to extract. Re-exported from [`extract-files`](https://npm.im/extract-files) for convenience.
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| `file` | [ReactNativeFileSubstitute](#type-reactnativefilesubstitute) | A React Native [`File`](https://developer.mozilla.org/docs/web/api/file) substitute. |
-
-#### Examples
-
-_A React Native file that can be used in query or mutation variables._
-
-> ```js
-> const { ReactNativeFile } = require('apollo-upload-client')
->
-> const file = new ReactNativeFile({
->   uri: uriFromCameraRoll,
->   name: 'a.jpg',
->   type: 'image/jpeg'
-> })
-> ```
-
----
-
-### function createUploadLink
-
-Creates a terminating [Apollo Link](https://apollographql.com/docs/link) capable of file uploads. Options match [`createHttpLink`](https://apollographql.com/docs/link/links/http#options).
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| `options` | object | Options. |
-| `options.uri` | string? = /graphql | GraphQL endpoint URI. |
-| `options.fetch` | Function? | [`fetch`](https://fetch.spec.whatwg.org) implementation to use, defaulting to the `fetch` global. |
-| `options.fetchOptions` | [FetchOptions](#type-fetchoptions)? | `fetch` options; overridden by upload requirements. |
-| `options.credentials` | string? | Overrides `options.fetchOptions.credentials`. |
-| `options.headers` | object? | Merges with and overrides `options.fetchOptions.headers`. |
-| `options.includeExtensions` | boolean? = `false` | Toggles sending `extensions` fields to the GraphQL server. |
-
-**Returns:** ApolloLink — A terminating [Apollo Link](https://apollographql.com/docs/link) capable of file uploads.
-
-#### See
-
-- [GraphQL multipart request spec](https://github.com/jaydenseric/graphql-multipart-request-spec).
-- [apollo-link on GitHub](https://github.com/apollographql/apollo-link).
-
-#### Examples
-
-_A basic Apollo Client setup._
-
-> ```js
-> const { ApolloClient } = require('apollo-client')
-> const { InMemoryCache } = require('apollo-cache-inmemory')
-> const { createUploadLink } = require('apollo-upload-client')
->
-> const client = new ApolloClient({
->   cache: new InMemoryCache(),
->   link: createUploadLink()
-> })
-> ```
-
----
-
-### type FetchOptions
-
-GraphQL request `fetch` options.
-
-**Type:** object
-
-| Property      | Type    | Description                      |
-| :------------ | :------ | :------------------------------- |
-| `headers`     | object  | HTTP request headers.            |
-| `credentials` | string? | Authentication credentials mode. |
-
-#### See
-
-- [Polyfillable fetch options](https://github.github.io/fetch#options).
-
----
-
-### type ReactNativeFileSubstitute
-
-A React Native [`File`](https://developer.mozilla.org/docs/web/api/file) substitute.
-
-Be aware that inspecting network requests with Chrome dev tools interferes with the React Native `FormData` implementation, causing network errors.
-
-**Type:** object
-
-| Property | Type | Description |
-| :-- | :-- | :-- |
-| `uri` | string | Filesystem path. |
-| `name` | string? | File name. |
-| `type` | string? | File content type. Some environments (particularly Android) require a valid MIME type; Expo `ImageResult.type` is unreliable as it can be just `image`. |
-
-#### See
-
-- [`extract-files` docs](https://github.com/jaydenseric/extract-files#type-reactnativefilesubstitute).
-- [React Native `FormData` polyfill source](https://github.com/facebook/react-native/blob/v0.45.1/Libraries/Network/FormData.js#L34).
-
-#### Examples
-
-_A camera roll file._
-
-> ```js
-> {
->   uri: uriFromCameraRoll,
->   name: 'a.jpg',
->   type: 'image/jpeg'
-> }
-> ```

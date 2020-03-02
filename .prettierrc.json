@@ -1,5 +1,3 @@
 {
-  "proseWrap": "never",
-  "singleQuote": true,
-  "semi": false
+  "proseWrap": "never"
 }
